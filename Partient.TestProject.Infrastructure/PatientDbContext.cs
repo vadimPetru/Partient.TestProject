@@ -6,11 +6,12 @@ namespace Partient.TestProject.Infrastructure
 {
     public class PatientDbContext : DbContext
     {
-        public PatientDbContext(DbContextOptions options) : base(options)
+        public PatientDbContext(DbContextOptions<PatientDbContext> options) : base(options)
         {
-
         }
-
+        public PatientDbContext()
+        {
+        }
         public DbSet<Patient> Patients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

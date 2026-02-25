@@ -29,7 +29,7 @@ namespace Partient.TestProject.Infrastructure.Repositories
         {
             return await _context.Patients
                 .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.Name.Id == id ,cancellationToken);
+                .FirstOrDefaultAsync(p => p.Id == id ,cancellationToken);
         }
 
         public async Task<IEnumerable<Patient>> GetPatients(
