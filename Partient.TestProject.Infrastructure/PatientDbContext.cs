@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Partient.TestProject.Domain.Models;
+using Partient.TestProject.Infrastructure.Configuration;
 
 namespace Partient.TestProject.Infrastructure
 {
@@ -7,8 +8,16 @@ namespace Partient.TestProject.Infrastructure
     {
         public PatientDbContext(DbContextOptions options) : base(options)
         {
+
         }
 
         public DbSet<Patient> Patients { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new PatientConfiguration());
+        }
     }
 }

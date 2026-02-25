@@ -32,7 +32,11 @@ namespace Partient.TestProject.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.Name.Id == id ,cancellationToken);
         }
 
-        public async Task<IEnumerable<Patient>> GetPatients(int pageSize , int pageNumber, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Patient>> GetPatients(
+            int pageSize ,
+            int pageNumber,
+            CancellationToken cancellationToken = default
+            )
         {
             return await _context.Patients
                 .AsNoTracking()
