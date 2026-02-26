@@ -4,9 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructure();
 builder.Services.AddControllers();
 
-
-
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -17,11 +16,10 @@ builder.Services.AddSwaggerGen(c =>
         Contact = new Microsoft.OpenApi.Models.OpenApiContact
         {
             Name = "Developer",
-            Email = "developer@example.com"
+            Email = "6ddd14@gmail.com"
         }
     });
 
-    // Опционально: добавить поддержку XML комментариев
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     if (File.Exists(xmlPath))
@@ -37,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Patient API V1");
-        c.RoutePrefix = "swagger"; // или можно оставить пустым для корневого пути
+        c.RoutePrefix = "swagger"; 
         c.DocumentTitle = "Patient API Documentation";
     });
 }

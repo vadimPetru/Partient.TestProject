@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Partient.TestProject.Domain.Interfaces;
 using Partient.TestProject.Domain.Models;
+using Partient.TestProject.Infrastructure.Expressions;
 
 namespace Partient.TestProject.Infrastructure.Repositories
 {
@@ -13,10 +14,11 @@ namespace Partient.TestProject.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task CreatePatient(Patient patient, CancellationToken cancellationToken = default)
+        public async Task<Guid> CreatePatient(Patient patient, CancellationToken cancellationToken = default)
         {
             _context.Add(patient); 
             await _context.SaveChangesAsync(cancellationToken);
+            return patient.Id;
         }
 
         public async Task DeletePatient(Guid id, CancellationToken cancellationToken = default)
@@ -45,9 +47,11 @@ namespace Partient.TestProject.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public Task<IQueryable<Patient>> PatientSearchBirthDate(DateTime birthDate, CancellationToken cancellationToken = default)
+        public IQueryable<Patient> PatientSearchBirthDate(string birthDate, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return _context.Patients
+                .AsNoTracking()
+                .WhereFhirDate(birthDate, p => p.BirthDate);
         }
 
         public async Task UpdatePatient(Patient newPatient, CancellationToken cancellationToken = default)

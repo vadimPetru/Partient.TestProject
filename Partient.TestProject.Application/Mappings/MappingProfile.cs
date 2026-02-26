@@ -9,7 +9,9 @@ namespace Partient.TestProject.Application.Mappings
         public MappingProfile()
         {
             CreateMap<PatientRequest, Patient>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
+                .ForMember(dest => dest.Active, opt => opt.MapFrom(src => src.Active));
         }
     }
 }

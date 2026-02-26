@@ -13,6 +13,9 @@ namespace Partient.TestProject.Infrastructure.Configuration
 
             entity.OwnsOne(p => p.Name, name =>
             {
+                name.Property(n => n.Id)
+                    .HasColumnName("Id");
+
                 name.Property(n => n.Family)
                     .IsRequired()
                     .HasMaxLength(100)

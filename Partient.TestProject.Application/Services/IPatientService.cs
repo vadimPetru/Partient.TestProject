@@ -9,8 +9,9 @@ namespace Partient.TestProject.Application.Services
         Task<Patient> GetPatientById(Guid id , CancellationToken cancellationToken);
 
 
-        Task CreatePatient(PatientRequest request, CancellationToken cancellationToken);
-        Task UpdatePatient(Guid id ,PatientRequest newRequest, CancellationToken cancellationToken);
+        Task<Guid> CreatePatient(PatientRequest request, CancellationToken cancellationToken);
+        Task UpdatePatient(Guid id,PatientRequest request, CancellationToken cancellationToken);
         Task RemovePatient(Guid guid, CancellationToken cancellationToken);
+        Task<IQueryable<Patient>> Search(string[] birthDate, CancellationToken cancellationToken);
     }
 }

@@ -2,6 +2,7 @@
 using Partient.TestProject.Application.DTO_s;
 using Partient.TestProject.Domain.Interfaces;
 using Partient.TestProject.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Partient.TestProject.Application.Services
 {
@@ -15,10 +16,11 @@ namespace Partient.TestProject.Application.Services
             _repository = repository;
         }
 
-        public async Task CreatePatient(PatientRequest request,CancellationToken cancellationToken)
+        public async Task<Guid> CreatePatient(PatientRequest request,CancellationToken cancellationToken)
         {
             var patient = _mapper.Map<Patient>(request);
-            await _repository.CreatePatient(patient, cancellationToken);
+            var result = await _repository.CreatePatient(patient, cancellationToken);
+            return result;
         }
 
         public Task<Patient> GetPatientById(Guid id , CancellationToken cancellationToken)
@@ -42,11 +44,20 @@ namespace Partient.TestProject.Application.Services
             await _repository.DeletePatient(id, cancellationToken);
         }
 
-        public async Task UpdatePatient(Guid id , PatientRequest request , CancellationToken cancellationToken)
+        public async Task<IEnumerable<Patient>> Search(string birthDate, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(birthDate)) return Enumerable.Empty<Patient>();
+
+            var query =  _repository.PatientSearchBirthDate(birthDate, cancellationToken).Take(100);
+
+            return await query.ToListAsync(cancellationToken);
+        }
+
+        public async Task UpdatePatient(Guid id,PatientRequest request , CancellationToken cancellationToken)
         {
             var patient = await _repository.GetPatientById(id) ?? throw new NullReferenceException();
             _mapper.Map(request, patient);
-           await _repository.UpdatePatient(patient, cancellationToken);
+            await _repository.UpdatePatient(patient, cancellationToken);
         }
     }
 }
