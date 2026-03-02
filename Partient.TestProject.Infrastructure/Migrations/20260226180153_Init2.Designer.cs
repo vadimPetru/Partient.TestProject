@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Partient.TestProject.Infrastructure;
@@ -11,16 +12,16 @@ using Partient.TestProject.Infrastructure;
 namespace Partient.TestProject.Infrastructure.Migrations
 {
     [DbContext(typeof(PatientDbContext))]
-    partial class PatientDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260226180153_Init2")]
+    partial class Init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.35")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "btree_gist");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Partient.TestProject.Domain.Models.Patient", b =>
@@ -42,9 +43,7 @@ namespace Partient.TestProject.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BirthDate")
-                        .HasDatabaseName("IX_Patients_BirthDate_GiST");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("BirthDate"), "gist");
+                        .HasDatabaseName("IX_Patients_BirthDate");
 
                     b.ToTable("Patients");
                 });

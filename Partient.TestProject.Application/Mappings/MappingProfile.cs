@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Partient.TestProject.Application.DTO_s;
+using Partient.TestProject.Domain.Enums;
 using Partient.TestProject.Domain.Models;
 
 namespace Partient.TestProject.Application.Mappings
@@ -9,9 +10,16 @@ namespace Partient.TestProject.Application.Mappings
         public MappingProfile()
         {
             CreateMap<PatientRequest, Patient>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
-                .ForMember(dest => dest.Active, opt => opt.MapFrom(src => src.Active));
+               .ForMember(dest => dest.Id, opt => opt.Ignore())
+               .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+                   src.Name ?? new Name())) 
+               .ForMember(dest => dest.Gender, opt => opt.MapFrom(src =>
+                   src.Gender)) 
+               .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src =>
+                   src.BirthDate == default ? DateTime.UtcNow : src.BirthDate)) 
+               .ForMember(dest => dest.Active, opt => opt.MapFrom(src => src.Active));
+
+
         }
     }
 }

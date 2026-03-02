@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Partient.TestProject.Application.DTO_s;
-using Partient.TestProject.Application.Services;
-
+using Partient.TestProject.Application.Services.PatientServices;
+using Partient.TestProject.Domain.Enums;
+using Partient.TestProject.Domain.Models;
 
 namespace Partient.TestProject.Web.Controllers
 {
@@ -17,20 +19,17 @@ namespace Partient.TestProject.Web.Controllers
         }
 
         /// <summary>
-        /// Получает список пациентов с пагинацией
+        /// Запрос на получение все пациентов
         /// </summary>
-        /// <param name="pageSize">Количество элементов на странице (по умолчанию 10, максимум 100)</param>
-        /// <param name="pageNumber">Номер страницы (начиная с 1)</param>
         /// <param name="cancellationToken">Токен отмены</param>
-        /// <returns>Список пациентов</returns>
-        /// <response code="200">Успешно получен список пациентов</response>
-        /// <response code="400">Неверные параметры пагинации</response>
-        /// <response code="500">Внутренняя ошибка сервера</response>
+        /// <returns></returns>
         [HttpGet]
-        public IActionResult GetPatients(int pageSize , int pageNumber, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetPatients(
+            CancellationToken cancellationToken)
         {
-            var partients = _service.GetPatientResponses(pageSize,pageNumber, cancellationToken);
-            return Ok(partients);
+            var patients = await _service.GetPatients(cancellationToken);
+
+            return Ok(patients ?? new List<Patient>());
         }
 
         /// <summary>
@@ -43,11 +42,12 @@ namespace Partient.TestProject.Web.Controllers
         /// <response code="404">Пациент не найден</response>
         /// <response code="400">Неверный формат идентификатора</response>
         [HttpGet("{id:guid}")]
-        public IActionResult GetPatient(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetPatient(Guid id, CancellationToken cancellationToken)
         {
-            var partients = _service.GetPatientById(id, cancellationToken);
-            return Ok();
+            var partient = await _service.GetPatientById(id, cancellationToken);
+            return Ok(partient);
         }
+
         /// <summary>
         /// Создает нового пациента
         /// </summary>
@@ -59,7 +59,7 @@ namespace Partient.TestProject.Web.Controllers
         {
             var patientId = await _service.CreatePatient(request, cancellationToken);
 
-            return CreatedAtAction(nameof(GetPatient), new { id = patientId});
+            return Ok(patientId);
         }
         /// <summary>
         /// Удаляет пациента
@@ -70,9 +70,9 @@ namespace Partient.TestProject.Web.Controllers
         [HttpDelete]
         public async Task<IActionResult> Remove([FromBody] DeletePatientRequest request, CancellationToken cancellationToken)
         {
-            await _service.RemovePatient(request.Id, cancellationToken);
+            var id = await _service.RemovePatient(request.Id, cancellationToken);
 
-            return NoContent();
+            return Ok($"Пациент был удален: {id}");
         }
 
         /// <summary>
@@ -82,12 +82,12 @@ namespace Partient.TestProject.Web.Controllers
         /// <param name="request">Данные для обновления</param>
         /// <param name="cancellationToken">Токен отмены</param>
         /// <returns>Обновленный пациент</returns>
-        [HttpPatch]
+        [HttpPut]
         public async Task<IActionResult> Update([FromQuery]Guid id,[FromBody] PatientRequest request, CancellationToken cancellationToken)
         {
-            await _service.UpdatePatient(id,request, cancellationToken);
+            var idnew = await _service.UpdatePatient(id,request, cancellationToken);
 
-            return Ok();
+            return Ok($"Пациент был обновлен {idnew}");
         }
 
         /// <summary>
@@ -95,12 +95,17 @@ namespace Partient.TestProject.Web.Controllers
         /// </summary>
         /// <param name="Birthdate">Массив интервалов Birthdate</param>
         /// <returns>Массив пациентов</returns>
-        [HttpGet]
-        public async Task<IActionResult> Search([FromQuery] string[]? Birthdate, CancellationToken cancellationToken)
+        [HttpGet("search")]
+        public async Task<IActionResult> Date([FromQuery] ParserType type , [FromQuery] string[] birthDates, CancellationToken cancellationToken)
         {
-            var result = await _service.Search(Birthdate, cancellationToken);
+            if (birthDates is null || !birthDates.Any())
+                return BadRequest();
 
-           return result is null ? NotFound() : Ok(result);
+            var collection = _service.Handler(birthDates, type);
+            var patients = await collection.ToListAsync(cancellationToken);
+
+            return patients.Any() ? Ok(patients) : Ok(new List<Patient>());
         }
+
     }
 }

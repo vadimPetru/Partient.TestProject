@@ -1,0 +1,15 @@
+{
+  "workspace": {
+    "id": "4d143672-bacc-4870-9cea-b9622108fe4f"
+  },
+  "entities": {
+    "environments": [],
+    "flows": [],
+    "globals": [],
+    "mocks": [],
+    "specs": [
+      "..\\Partient.TestProject.Web\\obj\\Debug\\net6.0\\EndpointInfo\\Partient.TestProject.Web.json"
+    ],
+    "collections": []
+  }
+}

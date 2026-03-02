@@ -1,0 +1,108 @@
+{
+  "info": {
+    "_postman_id": "60630333-25c8-45bf-ba2d-ae609d8d4bcc",
+    "name": "PatientApi",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "patient",
+      "id": "19600d64-d65f-422e-a5f6-be94dc945ed2",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": {\n    \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"use\": \"string\",\n    \"family\": \"string\",\n    \"given\": [\n      \"string\"\n    ]\n  },\n  \"gender\": \"male\",\n  \"birthDate\": \"2026-03-02T06:33:20.403Z\",\n  \"active\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}",
+          "host": [
+            "{{base_url}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "patient",
+      "id": "6e8e8217-7a87-41e7-b42d-4864aeb3a085",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": {\n    \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"use\": \"string\",\n    \"family\": \"string\",\n    \"given\": [\n      \"string\"\n    ]\n  },\n  \"gender\": \"male\",\n  \"birthDate\": \"2026-03-01T18:55:49.982Z\",\n  \"active\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}",
+          "host": [
+            "{{base_url}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "patient",
+      "id": "978a2a75-e924-46e1-aa4f-6ef10eae8de0",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": {\n    \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"use\": \"string\",\n    \"family\": \"string\",\n    \"given\": [\n      \"string\"\n    ]\n  },\n  \"gender\": \"male\",\n  \"birthDate\": \"2026-03-01T18:55:49.982Z\",\n  \"active\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}?Id=d7a392fe-386d-46ef-9580-3592091fc32b",
+          "host": [
+            "{{base_url}}"
+          ],
+          "query": [
+            {
+              "key": "Id",
+              "value": "d7a392fe-386d-46ef-9580-3592091fc32b",
+              "type": "text",
+              "uuid": "a2e1f8cf-4932-4d24-b8aa-772fe705fc9a"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "patient",
+      "id": "b397484b-d211-42b3-8ae4-731c7a522638",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "patient/search",
+      "id": "480ea155-71ed-44eb-b13c-f7093277f408",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -4,11 +4,18 @@ namespace Partient.TestProject.Domain.Interfaces
 {
     public interface IPatientRepository
     {
-        Task<IEnumerable<Patient>> GetPatients(int pageSize, int pageNumber ,CancellationToken cancellationToken = default);
-        Task<Patient> GetPatientById(Guid id , CancellationToken cancellationToken = default);  
-        IQueryable<Patient> PatientSearchBirthDate(string birthDate, CancellationToken cancellationToken = default);
+        IQueryable<Patient> GetPatients();
+        Task<Patient> GetPatientById(Guid id, CancellationToken cancellationToken = default);
+
+
+        IQueryable<Patient> PatientSearchPrefixBirthDate(DateTime start, DateTime end, string? prefix, IQueryable<Patient> query);
+        IQueryable<Patient> PatientSearchPrefixBirthDateTime(DateTime start, DateTime end, string? prefix, IQueryable<Patient> query);
+        IQueryable<Patient> PatientSearchPrefixBirthInstant(DateTime target, string? prefix, IQueryable<Patient> query);
+        IQueryable<Patient> PatientSearchPrefixBirthPeriod(DateTime rStart, DateTime rEnd, string? prefix, IQueryable<Patient> query);
+        IQueryable<Patient> PatientSearchPrefixBirthDateTiming(DateTime rStart, DateTime rEnd, string prefix, IQueryable<Patient> query);
+
         Task<Guid> CreatePatient(Patient patient, CancellationToken cancellationToken = default);
-        Task UpdatePatient(Patient newPatient, CancellationToken cancellationToken = default);
-        Task DeletePatient(Guid id, CancellationToken cancellationToken = default);
+        Task<Guid> UpdatePatient(Patient patient, CancellationToken cancellationToken = default);
+        Task<Guid> DeletePatient(Patient patient, CancellationToken cancellationToken = default);
     }
 }

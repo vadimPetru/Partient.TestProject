@@ -16,9 +16,9 @@ namespace Partient.TestProject.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
+            modelBuilder.HasPostgresExtension("btree_gist");
             modelBuilder.ApplyConfiguration(new PatientConfiguration());
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Partient.TestProject.Domain.Enums;
 using Partient.TestProject.Domain.Models;
 using Partient.TestProject.Infrastructure.Converters;
 
@@ -9,7 +10,12 @@ namespace Partient.TestProject.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Patient> entity)
         {
+
             entity.HasKey(p => p.Id);
+
+            entity.Property(e => e.Id)
+                  .HasColumnName("PatientId")
+                  .ValueGeneratedNever();
 
             entity.OwnsOne(p => p.Name, name =>
             {
@@ -42,6 +48,9 @@ namespace Partient.TestProject.Infrastructure.Configuration
             entity.HasIndex(e => e.BirthDate)
                 .HasDatabaseName("IX_Patients_BirthDate");
 
+            entity.HasIndex(e => e.BirthDate)
+            .HasMethod("gist")
+            .HasDatabaseName("IX_Patients_BirthDate_GiST");
         }
     }
 }
